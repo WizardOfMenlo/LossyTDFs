@@ -1,0 +1,13 @@
+TDF <- Factoring
+- RSA Encryption C = M^e (mod n) trapdoor d = e^-1 
+- RSA c = x(x + b) (mod n) (solve the equation mod p, q and use CRT)
+- DCR c = g^m_1 m_2^n (mod n^2) trapdoor charmichel function (computable fact of N)
+
+CCA <- DL
+- Cramer Shoup from DDH (pedersen commit (x_1, x_2), (y_1, y_2), (z, 0), to encrypt rerandomize and hash (Cramer Shoup)) 
+
+CCA <- Factoring
+- DCR, CR (Follows from general construction of universal projective hash functions (Cramer Shoup))
+
+OT+CRH -> SMP
+- CRH -> Commitments -> ZK for NP (Micali, Goldreich, Widgerson)
