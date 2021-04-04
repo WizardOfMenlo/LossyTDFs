@@ -11,3 +11,7 @@ CCA <- Factoring
 
 OT+CRH -> SMP
 - CRH -> Commitments -> ZK for NP (Micali, Goldreich, Widgerson)
+
+WHY DOES A CPA not imply TRAPDOOR?
+
+SURVEY OF TDP http://www.goubin.fr/papers/dstar.pdf

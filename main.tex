@@ -114,6 +114,12 @@ keys]{ cryptocode }
     \begin{itemize}
         \item $\secpar$ is the security parameter, and
               we will abbreviate $n(\secpar) = \poly$ as simply $n$
+        \item $f({-})$ denotes the function taking $x \mapsto f(x)$
+        \item Write $H_\infty(X)$ for the min-entropy of $X$. This corresponds to the optimal probability of guessing $X$.
+        \item We let $\widetilde{H}_\infty(X|Y)$ be the average min-entropy of $X$ conditioned on $Y$.
+              This corresponds to the optimal probability of guessing $X$ knowing $Y$.
+        \item We use the following lemma, if $Y$ takes at most $2^r$ values then:
+              \[ \widetilde{H}_\infty(X|Y) \geq H_\infty(X) - r \]
     \end{itemize}
 \end{frame}
 
@@ -138,11 +144,70 @@ keys]{ cryptocode }
     RSA Encryption! In trapdoor form:
     \begin{itemize}
         \item $S(\secparam)$ generates $N, e, d$ as in RSA,
-              set $s = (N, e)$ and $t = (d)$ and returns $(s, t)$
+              set $s \coloneqq (N, e)$ and $t \coloneqq (d)$ and returns $(s, t)$
         \item $F(s, x)$ computes $x^e \mod N$
         \item $F^{-1}(t, c)$ computes $c^d \mod N$
     \end{itemize}
+    Composite Residuosity
+    \begin{itemize}
+        \item $S(\secparam)$ generates $N = pq$ as a product of large primes,
+              select $g$ suitably, $s \coloneqq (N, g)$, $t \coloneqq (p, q)$
+        \item $F(s, x)$ splits $x = m_1 + N m_2$ and returns $g^{m_1} m_2^N \mod N^2$
+        \item $F^{-1}(t, c)$ decrypts using the factorization to compute Carmichael function
+    \end{itemize}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Lossy Trapdoors}
+    Informally, you either get an injective trapdoor or a 'lossy' function, and \textit{cannot tell which is which}
+    \begin{definition}
+        A ($n$, $k$)-lossy trapdoor function consists of three PPT algorithms $(S, F, F^{-1})$.
+        We denote $S_{inj}({-}) \triangleq S({-}, 0)$ and $S_{lossy}({-}) \triangleq S({-}, 1)$.
+        \begin{itemize}
+            \item \textit{Outputs of $S_{inj}$ are easy to compute and easy to invert with trapdoor.}
+                  $S_{inj}(\secparam) \rightarrow (s, t)$ s.t. that $F(s, {-})$, $F^{-1}(t, {-})$ are in the trapdoor case
+            \item \textit{Outputs of $S_{lossy}$ are easy to compute}.
+                  $S_{lossy}(\secparam) \rightarrow (s, \bot)$ s.t. $F(s, {-})$ is a function on $\bin^n$
+                  with image size at most $2^{n-k}$.
+            \item The first outputs of $S_{inj}(\secparam)$ and $S_{lossy}(\secparam)$ are computationally indistinguishable.
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Subleties}
+    \begin{itemize}
+        \item The definition really relates to a collection of lossy trapdoor functions.
+        \item $k \triangleq k(\secpar) = \poly \leq n$ is a parameter that represents how 'lossy' the collection is.
+        \item We also write $r \triangleq n-k = \poly$ as the \textit{residual leakage}.
+        \item No hardness requirement on inverting outputs of $S_{inj}$
+        \item Requirements are too strict in lattices, leads to \textit{almost-always} lossy functions.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{All-But-One TDFs}
+    Intuition: Most branches are trapdoors, except one which is lossy. You cannot tell which one it is.
+    \begin{definition}
+        An $(n, k)$-ABO TDF is a triple of PPT algorithms $S, F, F^{-1}$ such that:
+        \begin{itemize}
+            \item $S(\secparam, b^*) \rightarrow (s, t)$ as before
+            \item For any $b \neq b^*$, $F(s, b, {-})$ $F^{-1}(t, b, {-})$ are as in the previous definition.
+            \item $F(s, b^*, {-})$ is a lossy function as before
+            \item For any $b,b'$ the first outputs of $S(\secparam, b)$, $S(\secparam, b')$ are computationally indistinguishable.
+        \end{itemize}
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{ABO $\equiv$ LTDF}
+    \begin{itemize}
+        \item ABOs and LTDFs are equivalent.
+        \item ABO $\implies$ LTDF. Take ABO on $\bin$ and evaluate always on one of the branches, but switch lossy branch on generation.
+        \item LTDF $\implies$ ABO. Generate an ABO on $\bin$ by having $s = (s_0, s_1)$ where one of the two is lossy, and evaluation by using $s_b$
+        \item Finally, we can extend ABOs on $\bin$ to ABOs on $\bin^\ell$ at the cost of having residual leakage $\ell r$. The idea is,
+              for lossy branch $b^* \in \bin^\ell$, generate $\ell$ ABOs each with the $i$-th having lossy branch $b^*_i$.
+    \end{itemize}
+\end{frame}
 
 \end{document}
