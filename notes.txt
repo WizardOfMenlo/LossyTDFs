@@ -15,3 +15,5 @@ OT+CRH -> SMP
 WHY DOES A CPA not imply TRAPDOOR?
 
 SURVEY OF TDP http://www.goubin.fr/papers/dstar.pdf
+
+LTDF <- DDH why residual leakage important?
