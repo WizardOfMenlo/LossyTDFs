@@ -300,28 +300,33 @@ keys]{ cryptocode }
 
 \begin{frame}
     \frametitle{LTDF $\implies$ CCA}
+    Correctness is easy to check. We next show security in the single
+    encryption CCA security game. Below we show the formal game definition.
+    $\mathrm{Setup}$ is to be called once at the beginning of the game, and
+    the attacker is allowed a single query to $\mathrm{EncO}$ and oracle access to
+    $\mathrm{DecO}$. The attacker wins if it outputs $b' = b$.
     \begin{center}
-    \begin{pchstack}
-        \procedure[space=auto]{$\mathrm{Setup}(\secpar)$}{
-            b \sample \bin \\
-            \mathcal{T}_{enc} = \emptyset \\
-            pk, sk \rightarrow \mathcal{G}(\secpar) \\
-            \pcreturn pk
-        }
-        \procedure{$\mathrm{EncO}(m_0, m_1)$}{
-            c \rightarrow \mathcal{E}(pk, m_b) \\
-            \mathcal{T}_{enc} \coloneqq \mathcal{T}_{enc} \cup \set{c} \\
-            \pcreturn c
-        }
-        \procedure{$\mathrm{DecO}(c^*)$}{
-            \pcif c^* \in \mathcal{T}_{enc} \\
-            \pcreturn \bot \\
-            \pcfi \\
-            \pcreturn \mathcal{D}(sk, c^*)
-        }
-    \end{pchstack}       
+        \begin{pchstack}
+            \procedure[space=auto]{$\mathrm{Setup}(\secpar)$}{
+                b \sample \bin \\
+                \mathcal{T}_{enc} = \emptyset \\
+                pk, sk \rightarrow \mathcal{G}(\secpar) \\
+                \pcreturn pk
+            }
+            \procedure{$\mathrm{EncO}(m_0, m_1)$}{
+                c \rightarrow \mathcal{E}(pk, m_b) \\
+                \mathcal{T}_{enc} \coloneqq \mathcal{T}_{enc} \cup \set{c} \\
+                \pcreturn c
+            }
+            \procedure{$\mathrm{DecO}(c^*)$}{
+                \pcif c^* \in \mathcal{T}_{enc} \\
+                \pcreturn \bot \\
+                \pcfi \\
+                \pcreturn \mathcal{D}(sk, c^*)
+            }
+        \end{pchstack}
     \end{center}
-    
+
 \end{frame}
 
 \end{document}
