@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage{lmodern}
+\usetheme[style=light]{Nord}
 \usefonttheme{professionalfonts}
 \usepackage{amssymb, amsmath}
 \usepackage [lambda,
@@ -30,8 +31,9 @@ keys]{ cryptocode }
 \title{Lossy Trapdoor Functions}
 \subtitle{by Chris Peikert, Brent Waters}
 \author{Giacomo Fenzi}
-\institute{ETH Zurich}
+\institute{supervised by Akin Ünal}
 \date{22 April 2021}
+
 
 
 
@@ -136,8 +138,8 @@ keys]{ cryptocode }
     \begin{pchstack}[center]
                   \procedure{$S(\secparam)$}{
                       \text{Select primes } p, q,  N \coloneqq pq \\
-                      \text{Select } e \text{ s.t. } \gcd(e, \phi(n)) = 1 \\
-                      d \coloneqq e^{-1} \mod \phi(n) \\
+                      \text{Select } e \text{ s.t. } \gcd(e, \phi(N)) = 1 \\
+                      d \coloneqq e^{-1} \mod \phi(N) \\
                       s \coloneqq (N, e) \\
                       t \coloneqq (s, d) \\
                       \pcreturn (s, t)
@@ -146,8 +148,9 @@ keys]{ cryptocode }
                       \procedure{$F(s, x)$}{
                           \pcreturn x^e \mod N
                       }
+
                       \procedure{$F^{-1}(t, y)$}{
-                          \pcreturn y^c \mod N
+                          \pcreturn y^d \mod N
                       }
                   \end{pcvstack}
                   
@@ -250,6 +253,8 @@ keys]{ cryptocode }
             \procedure{$E_h(m; r)$}{
                 \pcreturn (g^r, h^r g^m)
             }
+
+
             \procedure{$D_h((c_1, c_2); r)$}{
                 \pcreturn \log_g \left( \frac{c_2}{c_1^z} \right)
             }
@@ -385,7 +390,7 @@ keys]{ cryptocode }
         c_1 = F_{ltdf}(s, x) \\
         c_2 = G_{abo}(s', vk, x) \\
         c_3 = m \xor h(x) \\
-        \omega \leftarrow \mathrm{Sign}(sk_\sigma, (c_i)_{i=1}^3) \\
+        \sigma \leftarrow \mathrm{Sign}(sk_\sigma, (c_i)_{i=1}^3) \\
         \pcreturn (vk, c_1, c_2, c_3, \sigma)
         }
 
@@ -469,10 +474,12 @@ keys]{ cryptocode }
 \begin{frame}
     \frametitle{Related Work}
     \begin{itemize}
-        \item More Constructions of LTDFs
-        \item All-But-N LTDFs
-        \item All-But-Many LTDFs
-        \item Identity Based LTDFs
+        \item More Constructions of LTDFs (Freeman et al.)
+        \item Lossy Encryption (Bellare et al.)
+        \item All-But-N LTDFs (Hemenway et al.)
+        \item All-But-Many LTDFs (Hofheinz)
+        \item Identity Based LTDFs (Bellare et al.)
+        \item Deterministic PKE (Boldyreva et al.)
     \end{itemize}
 \end{frame}
 
